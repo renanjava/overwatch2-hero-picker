@@ -1,0 +1,106 @@
+<img src="https://via.placeholder.com/150" alt="Overwatch Logo" />
+<h1>Overwatch2 Hero Picker</h1>
+<p>
+  <strong>Overwatch2 Hero Picker</strong> é uma API RESTful projetada para fãs de <em>Overwatch 2</em>, permitindo que jogadores criem perfis e marquem seus heróis favoritos. A aplicação consome uma API não oficial do <em>Overwatch</em> para obter dados atualizados de heróis (como nome, função, etc.) e os armazena automaticamente em um banco SQLite ao iniciar. Jogadores podem registrar perfis e associar heróis favoritos, com validação robusta de dados via Yup e gerenciamento de banco via Sequelize, garantindo uma experiência confiável e personalizada.
+</p>
+<h2>Funcionalidades</h2>
+<ul>
+  <li><strong>Integração com API do Overwatch</strong>: Consome uma API não oficial para buscar informações de heróis, como Tracer, Reinhardt ou Mercy.</li>
+  <li><strong>Gerenciamento de Jogadores</strong>: Criação e consulta de perfis de jogadores com informações básicas (ex.: ID, nome).</li>
+  <li><strong>Favoritagem de Heróis</strong>: Jogadores podem adicionar heróis à sua lista de favoritos, associando-os ao seu perfil.</li>
+  <li><strong>Validação de Dados</strong>: Usa Yup para validar DTOs (Data Transfer Objects) em requisições, garantindo que entradas como IDs sejam válidas (ex.: números inteiros positivos).</li>
+  <li><strong>Persistência com SQLite</strong>: Armazena jogadores, heróis e favoritos em um banco relacional, gerenciado pelo Sequelize.</li>
+  <li><strong>API RESTful</strong>: Oferece endpoints como <code>POST /players</code>, <code>POST /favorites</code> e <code>GET /players/:id/favorites</code> para interagir com o sistema.</li>
+</ul>
+<h2>Tecnologias Utilizadas</h2>
+<ul>
+  <li><strong>Node.js/Express</strong>: Framework para criar a API RESTful, gerenciando rotas e requisições.</li>
+  <li><strong>JavaScript</strong>: Linguagem principal, usada em todo o projeto para compatibilidade.</li>
+  <li><strong>Sequelize</strong>: ORM para gerenciar o banco SQLite, incluindo migrations e sincronização de dados.</li>
+  <li><strong>SQLite</strong>: Banco de dados leve para armazenar jogadores, heróis e favoritos.</li>
+  <li><strong>Yup</strong>: Biblioteca de validação para garantir a integridade dos DTOs.</li>
+  <li><strong>Axios</strong>: Cliente HTTP para consumir a API não oficial do <em>Overwatch</em>.</li>
+  <li><strong>dotenv</strong>: Gerenciamento de variáveis de ambiente (ex.: URL da API externa).</li>
+</ul>
+<h2>Pré-requisitos</h2>
+<p>Antes de começar, certifique-se de ter instalado:</p>
+<ul>
+  <li><a href="https://nodejs.org/">Node.js</a> (v16 ou superior)</li>
+  <li><a href="https://www.npmjs.com/">npm</a> (incluído com Node.js)</li>
+  <li><a href="https://www.sqlite.org/">SQLite</a> (opcional, Sequelize gerencia o arquivo do banco)</li>
+</ul>
+<h2>Instalação</h2>
+<ol>
+  <li>
+    <p><strong>Clone o repositório</strong>:</p>
+    <pre><code>git clone https://github.com/seu-usuario/overwatch2-hero-picker.git
+cd overwatch2-hero-picker</code></pre>
+  </li>
+  <li>
+    <p><strong>Instale as dependências</strong>:</p>
+    <pre><code>npm install</code></pre>
+  </li>
+  <li>
+    <p><strong>Configure as variáveis de ambiente</strong>:</p>
+    <p>Crie um arquivo <code>.env</code> na raiz com base no <code>.env.example</code>:</p>
+    <pre><code>PORT=3000
+API_OVERWATCH_URL=https://api-externa-overwatch.com/heroes
+DATABASE_URL=sqlite:./database.sqlite</code></pre>
+    <p>Substitua <code>API_OVERWATCH_URL</code> pela URL real da API não oficial.</p>
+  </li>
+  <li>
+    <p><strong>Execute as migrations</strong>:</p>
+    <p>Crie as tabelas no SQLite:</p>
+    <pre><code>npx sequelize-cli db:migrate</code></pre>
+  </li>
+  <li>
+    <p><strong>Inicie o servidor</strong>:</p>
+    <pre><code>npm start</code></pre>
+    <p>A API estará disponível em <code>http://localhost:3000</code>. Na inicialização, o sistema consumirá a API do <em>Overwatch</em>, sincronizará os heróis no banco e estará pronto para uso.</p>
+  </li>
+</ol>
+<h2>Endpoints Principais</h2>
+<table>
+  <tr>
+    <th>Método</th>
+    <th>Endpoint</th>
+    <th>Descrição</th>
+    <th>Exemplo de Body</th>
+  </tr>
+  <tr>
+    <td>POST</td>
+    <td><code>/players</code></td>
+    <td>Cria um novo jogador</td>
+    <td><code>{ "name": "Player1" }</code></td>
+  </tr>
+  <tr>
+    <td>GET</td>
+    <td><code>/players/:id</code></td>
+    <td>Retorna os dados de um jogador</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>POST</td>
+    <td><code>/favorites</code></td>
+    <td>Adiciona um herói favorito</td>
+    <td><code>{ "userId": 1, "heroId": 1 }</code></td>
+  </tr>
+  <tr>
+    <td>GET</td>
+    <td><code>/players/:id/favorites</code></td>
+    <td>Lista os heróis favoritos de um jogador</td>
+    <td>-</td>
+  </tr>
+</table>
+<p><strong>Exemplo de Requisição</strong> (favoritar um herói):</p>
+<pre><code>curl -X POST http://localhost:3000/favorites \
+-H "Content-Type: application/json" \
+-d '{"userId": 1, "heroId": 1}'</code></pre>
+<p><strong>Resposta</strong>:</p>
+<pre><code>{
+  "message": "Herói favoritado com sucesso!",
+  "data": {
+    "userId": 1,
+    "heroId": 1
+  }
+}</code></pre>
