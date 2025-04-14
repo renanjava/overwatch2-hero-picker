@@ -11,6 +11,7 @@
   <li><strong>Validação de Dados</strong>: Usa Yup para validar DTOs (Data Transfer Objects) em requisições, garantindo que entradas como IDs sejam válidas (ex.: números inteiros positivos).</li>
   <li><strong>Persistência com SQLite</strong>: Armazena jogadores, heróis e favoritos em um banco relacional, gerenciado pelo Sequelize.</li>
   <li><strong>API RESTful</strong>: Oferece endpoints como <code>POST /players</code>, <code>POST /favorites</code> e <code>GET /players/:id/favorites</code> para interagir com o sistema.</li>
+  <li><strong>Paginamento, Filtro e Ordenação</strong>: Implementação de funcionalidades para paginar, filtrar e ordenar heróis e favoritos.</li>
 </ul>
 <h2>Tecnologias Utilizadas</h2>
 <ul>
@@ -91,16 +92,38 @@ DATABASE_URL=sqlite:./database.sqlite</code></pre>
     <td>Lista os heróis favoritos de um jogador</td>
     <td>-</td>
   </tr>
+  <tr>
+    <td>GET</td>
+    <td><code>/heroes</code></td>
+    <td>Lista heróis com paginação, filtro e ordenação</td>
+    <td><code>{ "page": 1, "pageSize": 10, "filter": "tank", "sortBy": "name", "sortOrder": "asc" }</code></td>
+  </tr>
 </table>
-<p><strong>Exemplo de Requisição</strong> (favoritar um herói):</p>
-<pre><code>curl -X POST http://localhost:3000/favorites \
--H "Content-Type: application/json" \
--d '{"userId": 1, "heroId": 1}'</code></pre>
-<p><strong>Resposta</strong>:</p>
+<h3>Parâmetros de Paginação, Filtro e Ordenação</h3>
+<ul>
+  <li><strong>page</strong>: Página atual (opcional, padrão: 1).</li>
+  <li><strong>pageSize</strong>: Número de itens por página (opcional, padrão: 10).</li>
+  <li><strong>filter</strong>: Filtro para a função do herói (opcional, valores: <code>tank</code>, <code>dps</code>, <code>support</code>).</li>
+  <li><strong>sortBy</strong>: Campo para ordenação (opcional, valores: <code>name</code>, <code>role</code>).</li>
+  <li><strong>sortOrder</strong>: Direção da ordenação (opcional, valores: <code>asc</code>, <code>desc</code>, padrão: <code>asc</code>).</li>
+</ul>
+<h3>Exemplo de Requisição com Filtro, Paginação e Ordenação</h3>
+<pre><code>curl -X GET "http://localhost:3000/heroes?page=1&pageSize=10&filter=tank&sortBy=name&sortOrder=asc"</code></pre>
+<p><strong>Resposta:</strong></p>
 <pre><code>{
-  "message": "Herói favoritado com sucesso!",
-  "data": {
-    "userId": 1,
-    "heroId": 1
-  }
+  "page": 1,
+  "pageSize": 10,
+  "total": 50,
+  "heroes": [
+    {
+      "id": 1,
+      "name": "Reinhardt",
+      "role": "tank"
+    },
+    {
+      "id": 2,
+      "name": "Winston",
+      "role": "tank"
+    }
+  ]
 }</code></pre>
