@@ -56,6 +56,10 @@ function buscaHeroes(idHero){
     return heroes.findIndex((hero) => hero.id === idHero)
 }
 
+function buscaFavorites(idFavorite){
+    return favorites.findIndex((favorite) => favorite.id === idFavorite)
+}
+
 app.get("/", (req, res) => {
     res.status(200).send("Overwatch 2 - Hero Picker")
 })
@@ -67,6 +71,18 @@ app.get("/player", (req, res) => {
 app.post("/player", (req, res) => {
     players.push(req.body)
     res.status(201).json(players)
+})
+
+app.put("/player/:id", (req, res) => {
+    const index = buscaPlayers(req.params.id)
+    players[index].playerName = req.body.playerName
+    res.status(200).json(players[index])
+})
+
+app.delete("/player/:id", (req, res) => {
+    const index = buscaPlayers(req.params.id)
+    players.splice(index, 1)
+    res.status(200).json(players)
 })
 
 app.get("/player/:id", (req, res) => {
@@ -83,6 +99,12 @@ app.post("/favorite", (req, res) => {
     res.status(201).json(favorites)
 })
 
+app.delete("/favorite/:id", (req, res) => {
+    const index = buscaFavorites(req.params.id)
+    favorites.splice(index, 1)
+    res.status(200).json(favorites)
+})
+
 app.get("/player/:id/favorite", (req, res) => {
     const index = buscaPlayers(req.params.id)
     res.status(200).json(players[index].heroes)
@@ -95,6 +117,12 @@ app.get("/hero", (req, res) => {
 app.get("/hero/:id", (req, res) => {
     const index = buscaHeroes(req.params.id)
     res.status(200).json(heroes[index])
+})
+
+app.delete("/hero/:id", (req, res) => {
+    const index = buscaHeroes(req.params.id)
+    heroes.splice(index, 1)
+    res.status(200).json(heroes)
 })
 
 app.post("/hero", (req, res) => {
