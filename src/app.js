@@ -1,6 +1,8 @@
 const express = require('express')
+const routes = require('./routes/index.js')
+
 const app = express()
-app.use(express.json())
+routes(app)
 
 const heroes = [
     {
@@ -107,10 +109,6 @@ app.delete("/favorite/:id", (req, res) => {
 app.get("/player/:id/favorite", (req, res) => {
     const index = buscaPlayers(req.params.id)
     res.status(200).json(players[index].heroes)
-})
-
-app.get("/hero", (req, res) => {
-    res.status(200).json(heroes)
 })
 
 app.get("/hero/:id", (req, res) => {
