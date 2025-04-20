@@ -1,13 +1,11 @@
-const database = require('../models/index.js')
+const Controller = require('./Controller.js')
+const HeroServices = require('../services/HeroServices.js')
 
-class HeroController {
-    static async getAll(req, res) {
-        try{
-            const heroesList = await database.Hero.findAll()
-            return res.status(200).json(heroesList)
-        } catch (erro) {
-             
-        }
+const heroServices = new HeroServices()
+
+class HeroController extends Controller{
+    constructor() {
+        super(heroServices)
     }
 }
 
