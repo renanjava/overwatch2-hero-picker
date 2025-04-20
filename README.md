@@ -56,7 +56,7 @@ DATABASE_URL=sqlite:./database.sqlite</code></pre>
   </li>
   <li>
     <p><strong>Inicie o servidor</strong>:</p>
-    <pre><code>npm start</code></pre>
+    <pre><code>npm run dev</code></pre>
     <p>A API estará disponível em <code>http://localhost:3000</code>. Na inicialização, o sistema consumirá a API do <em>Overwatch</em>, sincronizará os heróis no banco e estará pronto para uso.</p>
   </li>
 </ol>
