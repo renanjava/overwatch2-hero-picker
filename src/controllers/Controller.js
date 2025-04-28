@@ -8,7 +8,7 @@ class Controller {
             const registryList = await this.entityService.getAllRegisters()
             return res.status(200).json(registryList)
         } catch (erro){
-
+            return res.status(500).json({ message: erro.message })
         }
     }
 

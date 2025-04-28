@@ -10,11 +10,7 @@ class Services {
     }
 
     async getOneRegister(id) {
-        return dataSource[this.nomeDoModel].findOne({
-            where: {
-                id: id
-            }
-        })
+        return dataSource[this.nomeDoModel].findByPk(id)
     }
 
     async createRegister(data) {
