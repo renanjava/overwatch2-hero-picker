@@ -15,7 +15,7 @@ class Controller {
     async getOne(req, res) {
         const { id } = req.params
         try {
-            const registry = await this.entityService.getOneRegister(id)
+            const registry = await this.entityService.getOneRegister(Number(id))
             if (!registry) {
                 return res.status(404).json({ message: 'Registro não encontrado' })
             }
@@ -39,7 +39,7 @@ class Controller {
         const { id } = req.params
         const data = req.body
         try {
-            const updatedRegistry = await this.entityService.updateRegister(id, data)
+            const updatedRegistry = await this.entityService.updateRegister(Number(id), data)
             if (!updatedRegistry) {
                 return res.status(404).json({ message: 'Registro não encontrado' })
             }
@@ -52,7 +52,7 @@ class Controller {
     async delete(req, res) {
         const { id } = req.params
         try {
-            const deletedRegistry = await this.entityService.deleteRegister(id)
+            const deletedRegistry = await this.entityService.deleteRegister(Number(id))
             if (!deletedRegistry) {
                 return res.status(404).json({ message: 'Registro não encontrado' })
             }
