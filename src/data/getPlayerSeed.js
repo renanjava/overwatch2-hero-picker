@@ -4,7 +4,8 @@ function getPlayerSeed() {
 
     for(let i = 0; i < 10; i++) {
         playerSeed.push({
-            playerName: faker.name.fullName(),
+            id: i + 1,
+            playerName: faker.person.fullName(),
             createdAt: new Date(),
             updatedAt: new Date(),
         })

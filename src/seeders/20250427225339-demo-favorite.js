@@ -1,18 +1,10 @@
 'use strict';
+const getFavoriteSeed = require("./../data/getFavoriteSeed.js");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('favorites', [
-      {
-        name: 'John Doe',
-        isBetaMember: false
-      },
-      {
-        name: 'John Doe',
-        isBetaMember: false
-      },
-  ], {});
+    await queryInterface.bulkInsert('favorites', getFavoriteSeed(), {});
   },
 
   async down (queryInterface, Sequelize) {
